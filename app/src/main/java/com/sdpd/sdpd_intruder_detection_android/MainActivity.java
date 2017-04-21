@@ -15,7 +15,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 public class MainActivity extends Activity {
-    private String url = "10.2.2.15/status/intruderDetected";
+    private String url = "http://10.42.0.1:3000/status/intruderDetected";
     private String intruderPresentString = "Intruder present";
     private String intruderAbsentString = "Intruder Absent";
 
@@ -39,7 +39,14 @@ public class MainActivity extends Activity {
     }
 
     protected void setStatus(String response) {
-        status_text_field.setText(response);
+        System.out.println(response);
+        if(response.equals("1")){
+            status_text_field.setText(intruderPresentString);
+        }
+        else if (response.equals("0")){
+            status_text_field.setText(intruderAbsentString);
+        }
+        else status_text_field.setText("Error");
     }
 
     protected void refresh() {
@@ -47,7 +54,7 @@ public class MainActivity extends Activity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        setStatus(response.substring(0,500));
+                        setStatus(response);
                     }
                 }, new Response.ErrorListener() {
                     @Override
